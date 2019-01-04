@@ -11,4 +11,4 @@ Based on [CCS811 library](https://github.com/maarten-pennings/CCS811), [ClosedCu
  * SDA - D2
  * WAK - D3
 
-![CJMCU-8118 CCS811 HDC1080](https://raw.githubusercontent.com/bfaliszek/CCS811_InfluxDB/master/CJMCU-8118_CCS811_HDC1080.jpg)
+![CJMCU-8118 CCS811 HDC1080](https://raw.githubusercontent.com/bfaliszek/CJMCU-8118_InfluxDB/master/CJMCU-8118_CCS811_HDC1080.jpg)
