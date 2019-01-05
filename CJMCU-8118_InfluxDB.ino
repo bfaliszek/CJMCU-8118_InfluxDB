@@ -39,7 +39,6 @@ ClosedCube_HDC1080 hdc1080;
 #define WiFi_SSID "WiFi_SSID"
 #define WiFi_Password "WiFi_Password"
 
-
 // ******************** Config End ********************
 
 ESP8266WiFiMulti WiFiMulti;
@@ -120,8 +119,8 @@ void loop()
     Serial.print(" ppb");
 
     dbMeasurement row(DEVICE_NAME);
-    row.addField("temperature", (int(hdc1080.readTemperature())));
-    row.addField("humidity", (int(hdc1080.readHumidity())));
+    row.addField("temperature", (float(hdc1080.readTemperature())));
+    row.addField("humidity", (float(hdc1080.readHumidity())));
     row.addField("eCO2", (int(eco2)));
     row.addField("TVOC", (int(etvoc)));
     if (influxdb.write(row) == DB_SUCCESS) {
