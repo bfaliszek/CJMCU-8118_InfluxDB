@@ -23,6 +23,7 @@
 // DeepSleep time – send data every 60 seconds
 const int sleepTimeS = 60;
 
+//Global sensor objects
 CCS811 ccs811(D3); // nWAKE on D3
 ClosedCube_HDC1080 hdc1080;
 
@@ -99,6 +100,10 @@ void setup()
 void loop()
 {
   uint16_t eco2, etvoc, errstat, raw;
+
+  // Pass environmental data from ENS210 to CCS811
+  ccs811.set_envdata210(float(hdc1080.readTemperature()), float(hdc1080.readHumidity()));
+
   ccs811.read(&eco2, &etvoc, &errstat, &raw);
   if ( errstat == CCS811_ERRSTAT_OK ) {
 
@@ -127,6 +132,7 @@ void loop()
       Serial.println("\n\nData send to InfluxDB");
     }
     row.empty();
+
   } else if ( errstat == CCS811_ERRSTAT_OK_NODATA ) {
     Serial.println("CCS811: waiting for (new) data");
   } else if ( errstat & CCS811_ERRSTAT_I2CFAIL ) {
