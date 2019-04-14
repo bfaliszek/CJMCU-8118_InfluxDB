@@ -39,7 +39,13 @@ ClosedCube_HDC1080::ClosedCube_HDC1080()
 
 void ClosedCube_HDC1080::begin(uint8_t address) {
 	_address = address;
-	Wire.begin();
+	//Wire.begin();
+	
+	// https://github.com/closedcube/ClosedCube_HDC1080_Arduino/pull/8/commits/724a233c76da13d4e559262eb6eeaa5037d33f09
+	HDC1080_Registers reg;
+	reg.SoftwareReset = 1;
+	writeRegister(reg);
+	delay(100);
 
 	setResolution(HDC1080_RESOLUTION_14BIT, HDC1080_RESOLUTION_14BIT);
 }
