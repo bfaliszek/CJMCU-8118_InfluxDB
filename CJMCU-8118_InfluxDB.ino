@@ -13,10 +13,10 @@
 #include <ESP8266WiFiMulti.h>
 #include <Wire.h>
 
-#include "src/ClosedCube_HDC1080.h" // HDC1080 library - https://github.com/closedcube/ClosedCube_HDC1080_Arduino
-#include "src/ccs811.h"  // CCS811 library - https://github.com/maarten-pennings/CCS811
+#include "src/ClosedCube_HDC1080.h" // HDC1080 library - https://github.com/closedcube/ClosedCube_HDC1080_Arduino // 14.04.2019
+#include "src/ccs811.h"  // CCS811 library - https://github.com/maarten-pennings/CCS811 // 14.04.2019
 
-#include "src/ESPinfluxdb.h" // https://github.com/hwwong/ESP_influxdb
+#include "src/ESPinfluxdb.h" // https://github.com/hwwong/ESP_influxdb // 14.04.2019
 
 // ********************** Config **********************
 
