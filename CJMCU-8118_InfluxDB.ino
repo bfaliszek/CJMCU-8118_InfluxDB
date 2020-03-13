@@ -7,14 +7,26 @@
   SDA - D2 -- GPIO 4
   WAK - D3 -- GPIO 0
 
+  ESP32
+  VCC - 3.3V
+  GND - G
+  SCL - 19
+  SDA - 18
+  WAK - 23
+
  ****************************************************/
 
+#ifdef ARDUINO_ARCH_ESP8266
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
+#elif defined ARDUINO_ARCH_ESP32
+#include <WiFi.h>
+#endif
+
 #include <Wire.h>
 
 #include "src/ClosedCube_HDC1080.h" // HDC1080 library - https://github.com/closedcube/ClosedCube_HDC1080_Arduino // 14.04.2019
-#include "src/ccs811.h"  // CCS811 library - https://github.com/maarten-pennings/CCS811 // 14.04.2019
+#include "src/ccs811.h"  // CCS811 library - https://github.com/maarten-pennings/CCS811 // 13.03.2020
 
 #include "src/ESPinfluxdb.h" // https://github.com/hwwong/ESP_influxdb // 14.04.2019
 
@@ -24,7 +36,13 @@
 const int sleepTimeS = 60;
 
 //Global sensor objects
-CCS811 ccs811(D3); // nWAKE on D3
+#ifdef ARDUINO_ARCH_ESP8266
+#define CCS811_WAK D3
+#elif defined ARDUINO_ARCH_ESP32
+#define CCS811_WAK 23
+#endif
+
+CCS811 ccs811(CCS811_WAK);
 ClosedCube_HDC1080 hdc1080;
 
 // InfluxDB – Config
@@ -41,9 +59,9 @@ ClosedCube_HDC1080 hdc1080;
 #define WiFi_Password "WiFi_Password"
 
 // ******************** Config End ********************
-
+#ifdef ARDUINO_ARCH_ESP8266
 ESP8266WiFiMulti WiFiMulti;
-
+#endif
 Influxdb influxdb(INFLUXDB_HOST, INFLUXDB_PORT);
 
 void setup()
@@ -53,14 +71,26 @@ void setup()
   Serial.println("");
 
   WiFi.mode(WIFI_STA);
+#ifdef ARDUINO_ARCH_ESP8266
   WiFiMulti.addAP(WiFi_SSID, WiFi_Password);
+#elif defined ARDUINO_ARCH_ESP32
+  WiFi.begin(WiFi_SSID, WiFi_Password);
+#endif
   Serial.println();
   Serial.print("Waiting for WiFi... ");
 
+#ifdef ARDUINO_ARCH_ESP8266
   while (WiFiMulti.run() != WL_CONNECTED) {
     Serial.print(".");
     delay(500);
   }
+#elif defined ARDUINO_ARCH_ESP32
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+
+#endif
 
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
